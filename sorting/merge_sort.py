@@ -55,3 +55,38 @@ def merge_sort(A, p, r):
         # Merge the sorted sub-arrays.
         A = merge(A, p, q, r)
     return A
+
+def merge_no_sentinels(A, p, q, r):
+    """
+    Merge sorted sub-arrays A[p:q] and A[q:r] of array A 
+    without using sentinels.
+
+    Args:
+        A (list of int): Our array.
+        p (int)
+        q (int)
+        r (int)
+
+    Returns:
+        list of int: Sorted array.
+
+    CLRS Exercise 2.3-2
+    """
+    L = A[p:q]
+    R = A[q:r]
+    k = 0
+    # Copy to A until L or R has all its elements copied back 
+    # to A
+    while L and R:
+        if L[0] <= R[0]:
+            A[k] = L.pop(0)
+        else:
+            A[k] = R.pop(0)
+        k += 1
+    # Copy the remainder of the non-empty back to A.
+    if L:
+        A[k:] = L
+    elif R:
+        A[k:] = R
+    return A
+

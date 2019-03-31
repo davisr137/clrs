@@ -24,3 +24,11 @@ class TestCase(unittest.TestCase):
         A = [5, 2, 4, 7, 1, 3, 2, 6]
         A_sorted = mst.merge_sort(A, 0, 8)
         self.assertEqual(A_sorted, [1, 2, 2, 3, 4, 5, 6, 7])
+
+    def test_merge_sort_no_sentinels(self):
+
+        A = [1,4,6,7,8,2,3,4,5,7,10,15,25,30,35]
+        A_sorted = mst.merge_no_sentinels(A, 0, 5, 15)
+        self.assertEqual(A_sorted, sorted(A))
+
+
