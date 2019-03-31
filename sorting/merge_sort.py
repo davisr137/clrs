@@ -90,3 +90,28 @@ def merge_no_sentinels(A, p, q, r):
         A[k:] = R
     return A
 
+def binary_search(A, x):
+    """
+    Perform binary search on array A for integer x. 
+
+    Args:
+        A (list of int): Sorted array. 
+        x (int) : Element for which to search. 
+    
+    Returns:
+        bool: True if x in A, otherwise False
+    """
+    if not A: # Empty array
+        return False
+    elif len(A) == 1: # Singleton; check if equals x
+        return(A[0] == x)
+    else:
+        # Length of array > 1
+        q = math.floor(len(A)/2)
+        if x == A[q]:
+            return(True)
+        # Halve the search space on each iteration
+        elif x < A[q]:
+            return binary_search(A[:q], x)
+        else:
+            return binary_search(A[q+1:], x)

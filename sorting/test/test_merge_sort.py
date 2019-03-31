@@ -26,9 +26,19 @@ class TestCase(unittest.TestCase):
         self.assertEqual(A_sorted, [1, 2, 2, 3, 4, 5, 6, 7])
 
     def test_merge_sort_no_sentinels(self):
-
+        """
+        Merge sort with no sentinels.
+        """
         A = [1,4,6,7,8,2,3,4,5,7,10,15,25,30,35]
         A_sorted = mst.merge_no_sentinels(A, 0, 5, 15)
         self.assertEqual(A_sorted, sorted(A))
 
+
+    def test_binary_search(self):
+        """
+        Binary search on sorted array.
+        """
+        A = sorted([1,4,6,7,8,2,3,4,5,7,10,15,25,30,35])
+        self.assertTrue(mst.binary_search(A, 3))
+        self.assertFalse(mst.binary_search(A, 17))
 
