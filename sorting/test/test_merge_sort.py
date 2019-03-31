@@ -16,3 +16,11 @@ class TestCase(unittest.TestCase):
         A_merged = mst.merge(A, p, q, r)
         expected = [1, 2, 3, 4, 4, 5, 6, 7, 7, 8] 
         self.assertEqual(A, A_merged)
+
+    def test_merge_sort(self):
+        """
+        Sort an array with merge sort.
+        """
+        A = [5, 2, 4, 7, 1, 3, 2, 6]
+        A_sorted = mst.merge_sort(A, 0, 8)
+        self.assertEqual(A_sorted, [1, 2, 2, 3, 4, 5, 6, 7])
