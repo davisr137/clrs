@@ -85,7 +85,7 @@ def max_heapify(A, i):
     largest = i
     if l <= len(A) and A[l] > A[i]:
         largest = l
-    if r <= len(A) and A[r] > A[largest]:
+    if r < len(A) and A[r] > A[largest]:
         largest = r
     if largest != i:
         # Swap value of node i with value of node largest. Node i
@@ -95,3 +95,18 @@ def max_heapify(A, i):
         A = exchange(A, i, largest) 
         A = max_heapify(A, largest)
     return A
+
+def build_max_heap(A):
+    """
+    Build a max-heap bottom-up from an unsorted array A.
+
+    Args:
+        A (list of int): Unsorted array.
+
+    Returns:
+        list of int: max-heap from elements of A
+    """
+    for i in reversed(range(0, math.floor(len(A)/2))):
+        A = max_heapify(A, i)
+    return A
+
