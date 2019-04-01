@@ -1,5 +1,5 @@
 import unittest2 as unittest
-import clrs.sorting.insertion_sort as ist
+import clrs.sorting.insertion as ist
 
 class TestCase(unittest.TestCase):
     """

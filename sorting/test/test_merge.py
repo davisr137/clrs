@@ -1,5 +1,5 @@
 import unittest2 as unittest
-import clrs.sorting.merge_sort as mst
+import clrs.sorting.merge as mst
 
 class TestCase(unittest.TestCase):
     """
