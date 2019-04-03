@@ -25,6 +25,18 @@ class Array(object):
         """
         return self._heap_size
 
+    def exchange(self, i, j):
+        """
+        Swap elements at indices i and j of array.
+
+        Args:
+            i (int)
+            j (int)
+        """
+        tmp = self.array[i]
+        self.array[i] = self.array[j]
+        self.array[j] = tmp
+
     def __len__(self):
         """
         Pass through length of underlying array.
@@ -67,30 +79,13 @@ def right(i):
     """
     return 2*i+2
 
-def exchange(A, i, j):
-    """
-    Swap elements at indices i and j of array A.
-
-    Args:
-        A (list of int)
-        i (int)
-        j (int)
-
-    Returns:
-        list of int: Array with elements swapped.
-    """
-    tmp = A[i]
-    A[i] = A[j]
-    A[j] = tmp
-    return A
-
 def max_heapify(A, i):
     """
     Transform subtree A[i] of into a max-heap. The left and right subtrees
     of A[i] must be max-heaps.
 
     Args:
-        A (list of int): Our array
+        A (Array): Our array
         i (int): Index into array.
 
     Returns:
@@ -100,16 +95,16 @@ def max_heapify(A, i):
     l = left(i) # Root of left subtree
     r = right(i) # Root of right subtree
     largest = i
-    if l <= len(A) and A[l] > A[i]:
+    if l < A.heap_size and A.array[l] > A.array[i]:
         largest = l
-    if r < len(A) and A[r] > A[largest]:
+    if r < A.heap_size and A.array[r] > A.array[largest]:
         largest = r
     if largest != i:
         # Swap value of node i with value of node largest. Node i
         # and its children now satisfy the max-heap property. Node largest
         # may now violate the max-heap property, so call max_heapify()
         # recursively on it.
-        A = exchange(A, i, largest) 
+        A.exchange(i, largest) 
         A = max_heapify(A, largest)
     return A
 
@@ -118,7 +113,7 @@ def build_max_heap(A):
     Build a max-heap bottom-up from an unsorted array A.
 
     Args:
-        A (list of int): Unsorted array.
+        A (Array): Unsorted array.
 
     Returns:
         list of int: max-heap from elements of A
@@ -142,9 +137,9 @@ def heapsort(A):
     l = len(A)
     heap_size = l
     for i in reversed(range(1, l)):
-        A = exchange(A, 0, i)
-        heap_size -= 1
-        A[0:heap_size] = max_heapify(A[0:heap_size], 0)
+        A.exchange(0, i)
+        A._heap_size -= 1
+        A = max_heapify(A, 0)
     return A
 
         
