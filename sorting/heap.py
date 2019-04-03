@@ -142,7 +142,6 @@ def heapsort(A):
     l = len(A)
     heap_size = l
     for i in reversed(range(1, l)):
-        print(i)
         A = exchange(A, 0, i)
         heap_size -= 1
         A[0:heap_size] = max_heapify(A[0:heap_size], 0)
