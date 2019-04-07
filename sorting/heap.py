@@ -1,21 +1,21 @@
 import math
 
-class Array(object):
+class Heap(object):
     """
     Heap array class. 
     """
-    def __init__(self, A, heap_size=None):
+    def __init__(self, values, heap_size=None):
         """
-        Initialize heap array.
+        Initialize heap .
         
         Args:
-            A (list of int): Our array.
+            values (list of int): Values in heap..
             heap_size (int): Number of elements in the heap stored
                 within the array. If None, set to len(A). 
         """
-        self.array = A
+        self.values = values
         if heap_size is None:
-            heap_size = len(A)
+            heap_size = len(values)
         self._heap_size = heap_size
 
     @property
@@ -33,15 +33,15 @@ class Array(object):
             i (int)
             j (int)
         """
-        tmp = self.array[i]
-        self.array[i] = self.array[j]
-        self.array[j] = tmp
+        tmp = self.values[i]
+        self.values[i] = self.values[j]
+        self.values[j] = tmp
 
     def __len__(self):
         """
         Pass through length of underlying array.
         """
-        return len(self.array)
+        return len(self.values)
 
 def parent(i):
     """
@@ -85,19 +85,19 @@ def max_heapify(A, i):
     of A[i] must be max-heaps.
 
     Args:
-        A (Array): Our array
+        A (Heap): Our heap.
         i (int): Index into array.
 
     Returns:
-        list of int: Array with subtree at A[i] satisfying the max-heap 
+        list of int: Heap with subtree at A[i] satisfying the max-heap 
             property.
     """
     l = left(i) # Root of left subtree
     r = right(i) # Root of right subtree
     largest = i
-    if l < A.heap_size and A.array[l] > A.array[i]:
+    if l < A.heap_size and A.values[l] > A.values[i]:
         largest = l
-    if r < A.heap_size and A.array[r] > A.array[largest]:
+    if r < A.heap_size and A.values[r] > A.values[largest]:
         largest = r
     if largest != i:
         # Swap value of node i with value of node largest. Node i
@@ -113,7 +113,7 @@ def build_max_heap(A):
     Build a max-heap bottom-up from an unsorted array A.
 
     Args:
-        A (Array): Unsorted array.
+        A (Heap): Unsorted array.
 
     Returns:
         list of int: max-heap from elements of A
@@ -142,5 +142,22 @@ def heapsort(A):
         A = max_heapify(A, 0)
     return A
 
-        
+
+class PriorityQueue(object):
+
+    def __init__(self):
+        pass
+
+    def insert(self, x):
+        pass
+
+    def maximum(self):
+        pass
+
+    def extract_max(self):
+        pass
+
+    def increase_key(self, x, k):
+        pass
+
 
