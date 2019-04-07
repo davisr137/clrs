@@ -144,20 +144,71 @@ def heapsort(A):
 
 
 class PriorityQueue(object):
+    """
+    Implement a priority queue using a max-heap.
 
-    def __init__(self):
-        pass
+    CLRS Section 6.5
+    """
+    def __init__(self, values, heap_size=None):
+        """
+        Create heap for priority queue implementation.
+
+        Args:
+            values (list of int): Our values.
+            heap_size (int): Size of heap. 
+        """
+        self.A = Heap(values, heap_size)
 
     def insert(self, x):
-        pass
+        """
+        Insert element 'x' into priority queue.
+
+        Args:
+            x (int): New element to insert.
+        """
+        self.A.heap_size += 1 
+        self.A.append(-1)
+        self.increase_key(A, A.heap_size, x)
 
     def maximum(self):
-        pass
+        """
+        Get maximum element of priority queue.
+        
+        Returns:
+            int: Max element.
+        """
+        return self.A.values[0]
 
     def extract_max(self):
-        pass
+        """
+        Extract maximum element of priority queue. Re-heapify
+        to maintain max-heap property.
 
-    def increase_key(self, x, k):
-        pass
+        Returns:
+            int: Max element in priority queue.
+        """
+        if self.A.heap_size < 1:
+            raise AssertionError("Heap underflow!")
+        _max = self.A.values[0]
+        self.A.values[0] = self.A[self.A.heap_size-1]
+        self.A._heap_size -= 1
+        self.A = max_heapify(self.A, 0)
+        return _max
+
+    def increase_key(self, x, key):
+        """
+        Increase key for element 'x' to 'key'.
+
+        Args:
+            x (int): Index of element.
+            key (int): New key.
+        """
+        if key < self.A.values[i]:
+            raise AssertionError("New key is smaller than current key!")
+        self.A.values[i] = key
+        while i > i and self.A.values[parent(i)] < self.A.values[i]:
+            self.A.exchange(i, parent(i))
+            i = parent(i)
+
 
 
