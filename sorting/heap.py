@@ -52,8 +52,10 @@ def parent(i):
 
     Returns:
         int: Index of parent
-    """
-    return math.floor(i/2)
+    """ 
+    i += 1
+    p = math.floor(i/2)
+    return p -1
 
 def left(i):
     """
@@ -65,7 +67,9 @@ def left(i):
     Returns:
         int: Index of left child.
     """
-    return 2*i+1
+    i += 1
+    l = 2*i
+    return l-1
 
 def right(i):
     """
@@ -77,7 +81,9 @@ def right(i):
     Returns:
         int: Index of right child.
     """
-    return 2*i+2
+    i += 1 
+    r = 2*i + 1
+    return r-1
 
 def max_heapify(A, i):
     """
@@ -166,9 +172,9 @@ class PriorityQueue(object):
         Args:
             x (int): New element to insert.
         """
-        self.A.heap_size += 1 
-        self.A.append(-1)
-        self.increase_key(A, A.heap_size, x)
+        self.A._heap_size += 1 
+        self.A.values.append(-1)
+        self.increase_key(self.A.heap_size-1, x)
 
     def maximum(self):
         """
@@ -190,23 +196,23 @@ class PriorityQueue(object):
         if self.A.heap_size < 1:
             raise AssertionError("Heap underflow!")
         _max = self.A.values[0]
-        self.A.values[0] = self.A[self.A.heap_size-1]
+        self.A.values[0] = self.A.values[self.A.heap_size-1]
         self.A._heap_size -= 1
         self.A = max_heapify(self.A, 0)
         return _max
 
-    def increase_key(self, x, key):
+    def increase_key(self, i, key):
         """
-        Increase key for element 'x' to 'key'.
+        Increase key for element 'i' to 'key'.
 
         Args:
-            x (int): Index of element.
+            i (int): Index of element.
             key (int): New key.
         """
         if key < self.A.values[i]:
             raise AssertionError("New key is smaller than current key!")
         self.A.values[i] = key
-        while i > i and self.A.values[parent(i)] < self.A.values[i]:
+        while i > 0 and self.A.values[parent(i)] < self.A.values[i]:
             self.A.exchange(i, parent(i))
             i = parent(i)
 

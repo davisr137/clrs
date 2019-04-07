@@ -1,7 +1,7 @@
 import unittest2 as unittest
 import clrs.sorting.heap as heap
 
-class TestCase(unittest.TestCase):
+class TestHeap(unittest.TestCase):
     """
     Unit tests for heap code.
     """
@@ -30,3 +30,27 @@ class TestCase(unittest.TestCase):
         A_st = heap.heapsort(A).values
         self.assertEqual(A_st, [1, 2, 3, 4, 4, 5, 6, 7, 7, 8])
 
+class TestPriorityQueue(unittest.TestCase):
+    """
+    Unit tests for priority queue class.
+    """
+    def setUp(self):
+        """
+        Initialize PQ.
+        """
+        self.pq = heap.PriorityQueue([15, 13, 9, 5, 12, 8, 7, 4, 0, 6, 2, 1])
+
+    def test_extract_max(self):
+        """
+        Extract max from PQ.
+        """
+        _max = self.pq.extract_max()
+        self.assertEqual(_max, 15)
+        self.assertEqual(self.pq.A.values, [13, 12, 9, 5, 6, 8, 7, 4, 0, 1, 2, 1])
+
+    def test_insert(self):
+        """
+        Insert new element into PQ.
+        """
+        self.pq.insert(10)
+        self.assertEqual(self.pq.A.values, [15, 13, 10, 5, 12, 9, 7, 4, 0, 6, 2, 1, 8])
