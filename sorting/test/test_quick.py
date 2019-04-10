@@ -20,3 +20,9 @@ class TestQuicksort(unittest.TestCase):
         self.assertEqual(B, [2, 1, 3, 4, 7, 5, 6, 8])
         self.assertEqual(pivot, 3)
 
+    def test_quicksort(self):
+        """
+        Run quicksort algorithm.
+        """
+        B = qs.quicksort(self.A, 0, 7)
+        self.assertEqual(B, [1, 2, 3, 4, 5, 6, 7, 8])
