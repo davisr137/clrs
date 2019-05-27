@@ -12,7 +12,7 @@ class BinaryNode:
         Constructor. Key is given by val.
         """
         self.val = val
-        self.p = None # Parent
+        self.parent = None # Parent
         self.left = None # Left child
         self.right = None # Right child
     def add_parent(self, parent):
@@ -51,10 +51,12 @@ def array_to_bst(arr: List[int]) -> BinaryNode:
     left_half = arr[:mid]
     if left_half:
         left = array_to_bst(left_half)
+        left.add_parent(root)
         root.add_left(left)
     right_half = arr[mid+1:]
     if right_half:
         right = array_to_bst(right_half)
+        right.add_parent(root)
         root.add_right(right)
     return root
 
@@ -84,3 +86,51 @@ def postorder_tree_walk(node: BinaryNode) -> None:
         inorder_tree_walk(node.left)
         inorder_tree_walk(node.right)
         print(node.val)
+
+def tree_search(node: BinaryNode, val: int) -> int:
+    """
+    Search for node with value val in tree.
+    """
+    if not node:
+        return None
+    if node.val == val: # Found node!
+        return node
+    if val < node.val: # Go left
+        return tree_search(node.left, val)
+    else: # Go right
+        return tree_search(node.right, val)
+
+def tree_minimum(root: BinaryNode) -> BinaryNode:
+    """
+    Get node with minimum value in BST.
+    """
+    node = root
+    while node.left:
+        node = node.left
+    return node
+
+def tree_maximum(root: BinaryNode) -> BinaryNode:
+    """
+    Get node with maximum value in BST.
+    """
+    node = root
+    while node.right:
+        node = node.right
+    return node
+
+def tree_successor(node: BinaryNode) -> BinaryNode:
+    """
+    Get successor to node in BST.
+    """
+    if node.right:
+        return tree_minimum(node.right)
+    x = node
+    y = node.parent
+    while y:
+        if x != y.right:
+            break
+        x = y
+        y = y.parent
+    return y
+
+
