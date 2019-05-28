@@ -133,4 +133,26 @@ def tree_successor(node: BinaryNode) -> BinaryNode:
         y = y.parent
     return y
 
-
+def tree_insert(root: BinaryNode, z: int) -> None:
+    """
+    Insert a node with value z into a BST.
+    """
+    # Start with y as None and x pointing to root
+    y = None
+    x = root
+    # Trace down tree until y is a leaf
+    while x:
+        y = x
+        if z < x.val:
+            x = x.left
+        else:
+            x = x.right
+    # Create a node with value z
+    z_node = BinaryNode(z)
+    z_node.add_parent(y)
+    # Add z as child of y
+    if y:
+        if z < y.val:
+            y.add_left(z_node)
+        else:
+            y.add_right(z_node)
