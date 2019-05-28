@@ -156,3 +156,40 @@ def tree_insert(root: BinaryNode, z: int) -> None:
             y.add_left(z_node)
         else:
             y.add_right(z_node)
+
+def tree_delete(z: BinaryNode):
+    """
+    Delete node z from binary search tree.
+    
+    O(h) on a tree of height h.
+    """
+    # Determine a node to "splice out". If node
+    # has at most one child, splice out node. If node has
+    # two children, splice out its successor.
+    if not z.left or not z.right:
+        y = z
+    else:
+        y = tree_successor(z)
+    # Set x to the non-null child of y, or to None if
+    # y has no children
+    if y.left:
+        x = y.left
+    else:
+        x = y.right
+    # Splice out node y
+    if x:
+        x.parent = y.parent
+    if not y.parent:
+        pass
+    else:
+        # y is left child
+        if y == y.parent.left:
+            y.parent.left = x
+        # y is right child
+        else:
+            y.parent.right = x
+    # If successor of z was the node spliced out, move
+    # y's key to z.
+    if y != z:
+        z.val = y.val
+    return y
