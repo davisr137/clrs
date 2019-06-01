@@ -12,15 +12,16 @@ class BinaryNode:
         Constructor. Key is given by val.
         """
         self.val = val
-        self.parent = None # Parent
-        self.left = None # Left child
-        self.right = None # Right child
-    def add_parent(self, parent):
+        # Parent, left child, right child
+        self.parent = None
+        self.left = None
+        self.right = None
+    def add_parent(self, parent -> None):
         """
         Add parent.
         """
         self.parent = parent
-    def add_left(self, left):
+    def add_left(self, left) -> None:
         """
         Add left child. 
         """
@@ -28,7 +29,7 @@ class BinaryNode:
             s = "Left child value must be less than or equal to node value."
             raise AssertionError(s)
         self.left = left
-    def add_right(self, right):
+    def add_right(self, right) -> None:
         """
         Add right child.
         """
