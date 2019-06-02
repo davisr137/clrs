@@ -1,6 +1,9 @@
 from typing import List
 
 # CLRS Section 15.2
+# Matrix-chain multiplication
+
+INF = 10**30
 
 def matrix_chain_order(p: List[int]):
     """
@@ -16,15 +19,36 @@ def matrix_chain_order(p: List[int]):
     """
     # n is the number of matrices to multiply
     n = len(p) - 1
-    # Initialize m with None
+    # Initialize m, s with None
     m = []
+    s = []
     for i in range(n):
         m += [[None] * n]
+        s += [[None] * n]
     # For chains consisting of one matrix, m[i,i] = 0
     for i in range(n):
         m[i][i] = 0
     # l is the chain lengths
-    for l in range(1, n):
-        # i is the start of chain 
+    for l in range(2, n+1):
+        # i is the start index of chain 
         for i in range(n-l+1):
-            pass
+            # j is the end index of the chain
+            j = i + l - 1 
+            # Initialize # scalar mult to large value
+            m[i][j] = INF
+            # Find value of k that minimizes scalar mults
+            for k in range(i, j):
+                # Compute # scalar mults
+                q = m[i][k] + m[k+1][j] + p[i]*p[k+1]*p[j+1]
+                # Update best solution
+                if q < m[i][j]:
+                    m[i][j] = q
+                    s[i][j] = k
+    return [m, s]
+
+def print_array(array: List[List[int]]):
+    """
+    Print each line in array one at a time.
+    """
+    for line in array:
+        print(line)
