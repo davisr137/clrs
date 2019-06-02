@@ -98,6 +98,8 @@ def generate_matrices(p: List[int]) -> List[np.ndarray]:
         matrices += [np.ones((p[i-1], p[i]))]
     return matrices
 
+## Exercise 15.2-2
+
 def matrix_chain_multiply(A: List[np.ndarray], s: List[List[int]], i: int, j: int) -> np.ndarray:
     """
     Multiply chain of matrices as to minimize the number of scalar operations.
@@ -115,6 +117,8 @@ def matrix_chain_multiply(A: List[np.ndarray], s: List[List[int]], i: int, j: in
     """
     if i == j:
         return A[i]
+    if i + 1 == j:
+        return np.dot(A[i], A[j])
     Ak = matrix_chain_multiply(A, s, i, s[i][j])
     Ak1 = matrix_chain_multiply(A, s, s[i][j]+1, j)
     prod = np.dot(Ak, Ak1)
