@@ -1,15 +1,26 @@
+import numpy as np
 from typing import List
 
-# CLRS Section 15.2
-# Matrix-chain multiplication
+## CLRS Section 15.2
+## Matrix-chain multiplication
+
+# We have a sequence (chain) [A1, A2,...,An] of matrices and we 
+# want to compute the product A1A2...An. A product of matrices 
+# is fully parenthesized if it is either a single matrix or the
+# product of two fully parenthesized matrix products, surrounded
+# by parentheses. We want to find the arrangement of parentheses
+# such that the number of scalar multiplications is minimized.
 
 INF = 10**30
 
-def matrix_chain_order(p: List[int]):
+def matrix_chain_order(p: List[int]) -> List:
     """
     Build tables using a bottom up approach to find the 
     minimum number of scalar multiplications for a matrix 
     chain. 
+
+    Args:
+        p (list of int): Dimensions of matrices in order.
 
     Returns:
         m -> m[i,j] is the minimum number of scalar multiplications
@@ -52,3 +63,59 @@ def print_array(array: List[List[int]]):
     """
     for line in array:
         print(line)
+
+def get_optimal_parens(s: List[List[int]], i: int, j: int, op: str) -> str:
+    """
+    Print optimal parenthesization of chain matrix product.
+
+    Args:
+        s (list of list of int): s[i,j] is the value of k such that
+            the optimal parenthesization splits the product between A_k
+            and A_{k+1}
+        i (int) : Start index in matrix chain.
+        j (int) : End index in matrix chain.
+    
+    Returns:
+        str - Printed optimal parenthesization of matrices.
+    """
+    if i == j:
+        op += 'A%s' % i
+        return op
+    op += '('
+    op = get_optimal_parens(s, i, s[i][j], op)
+    op = get_optimal_parens(s, s[i][j]+1, j, op)
+    op += ')'
+    return op
+
+def generate_matrices(p: List[int]) -> List[np.ndarray]:
+    """
+    Generate a list of matrices from a list of dimensions p. Each 
+    matrix is all ones.
+    """
+    matrices = []
+    L = len(p)
+    for i in range(1, L):
+        matrices += [np.ones((p[i-1], p[i]))]
+    return matrices
+
+def matrix_chain_multiply(A: List[np.ndarray], s: List[List[int]], i: int, j: int) -> np.ndarray:
+    """
+    Multiply chain of matrices as to minimize the number of scalar operations.
+
+    Args:
+        A (list of np.ndarray): Our matrices to multiply.
+        s (list of list of int): s[i,j] is the value of k such that
+            the optimal parenthesization splits the product between A_k
+            and A_{k+1}
+        i (int) : Start index in matrix chain.
+        j (int) : End index in matrix chain.
+
+    Returns:
+        np.ndarray: Product of matrices.
+    """
+    if i == j:
+        return A[i]
+    Ak = matrix_chain_multiply(A, s, i, s[i][j])
+    Ak1 = matrix_chain_multiply(A, s, s[i][j]+1, j)
+    prod = np.dot(Ak, Ak1)
+    return prod
