@@ -44,3 +44,47 @@ def lcs_length(X: str, Y: str) -> List:
                 c[i][j] = c[i][j-1]
                 b[i][j] = 'L'
     return [c,b]
+
+def lcs_string(b: List[List[int]], X: str) -> str:
+    """
+    Get longest common substring from b.
+    """
+    m = len(b)
+    n = len(b[0])
+    i = m-1
+    j = n-1
+    s = ""
+    while i > 1 or j > 1:
+        char = b[i][j]
+        if char == 'LU':
+            s += X[i-1]
+            i -= 1
+            j -= 1
+        elif char == 'U':
+            i -= 1
+        elif char == 'L':
+            j -= 1
+    return s[::-1]
+
+## Exercise 15.4-2
+
+def lcs_string_c(c: List[List[int]], X: str, Y: str) -> str:
+    """
+    Reconstruct a LCS from the completed c table and original
+    strings X and Y in O(m+n) time without using the b table.
+    """
+    m = len(c)
+    n = len(c[0])
+    i = m-1
+    j = n-1
+    s = ""
+    while i > 1 or j > 1:
+        if X[i-1] == Y[j-1]:
+            s += X[i-1]
+            i -= 1
+            j -= 1
+        elif c[i-1][j] >= c[i][j-1]:
+            i -= 1
+        else:
+            j -= 1
+    return s[::-1]
