@@ -100,4 +100,26 @@ def lcs_string_c(c: List[List[int]], X: str, Y: str) -> str:
 ## represented by columns. c[i-1][j-1] -> Z[0], c[i][j-1] -> Z[-1],
 ## c[i-1][j] -> Z[1]
 
-
+def lcs_length_efficient(X: str, Y: str) -> List:
+    """
+    Get tables finding longest common subsequence for strings
+    X and Y.
+    """
+    m = len(X)
+    n = len(Y)
+    # Make empty grids for c and b. c[i][j] is the length of
+    # a LCS of Xi and Yj.
+    Z = [0] * (n+2)
+    # LCS is zero if one string has zero length
+    # Iterate over rows, then columns
+    for i in range(1, m+1):
+        for j in range(0, n+1):
+            if j == 0:
+                Z = Z[1:] + [0]
+            elif X[i-1] == Y[j-1]:
+                Z = Z[1:] + [Z[0] + 1]
+            elif Z[1] >= Z[-1]:
+                Z = Z[1:] + [Z[1]]
+            else: # Z[1] < Z[-1]
+                Z = Z[1:] + [Z[-1]]
+    return Z[-1]
