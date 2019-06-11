@@ -88,3 +88,16 @@ def lcs_string_c(c: List[List[int]], X: str, Y: str) -> str:
         else:
             j -= 1
     return s[::-1]
+
+## Exercise 15.4-4
+## Show how to compute the length of a LCS using only 2 * min(m, n)
+## entries in the c table plus O(1) additional space. Then show how 
+## to do this using min(m, n) entries plus O(1) additional space.
+
+## Only need to keep min(m, n) + 1 records (Z) stored in c at a time. LCS
+## length algorithm goes one row at a time. Choose whichever (X, Y) 
+## is longer to be represented by rows, and the smaller to be 
+## represented by columns. c[i-1][j-1] -> Z[0], c[i][j-1] -> Z[-1],
+## c[i-1][j] -> Z[1]
+
+
