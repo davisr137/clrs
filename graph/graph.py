@@ -87,7 +87,7 @@ class Queue:
     def is_empty(self) -> bool:
         return len(self.Q) == 0
 
-def bfs(G: Graph, s: Node):
+def bfs(G: Graph, s: Node) -> None:
     """
     Perform breadth-first search on graph G starting at source node s.
     """
@@ -113,3 +113,16 @@ def bfs(G: Graph, s: Node):
                 v.predecessor = u
                 Q.enqueue(v)
         u.color = 'B'
+
+def print_path(G: Graph, s: Node, v: Node):
+    """
+    Print the vertices on the shortest path from s to v, assuming BFS has
+    already been run to compute the shortest-path tree.
+    """
+    if v == s:
+        print(s)
+    elif not v.predecessor:
+        print("No path from %s to %s exists" % (s, v))
+    else:
+        print_path(G, s, v.predecessor)
+        print(v)
