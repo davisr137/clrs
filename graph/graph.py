@@ -49,6 +49,9 @@ class Node:
         self.color = None
         self.distance = None
         self.predecessor = None
+        # 'discovered' and 'finished' fields used for DFS
+        self.discovered = None
+        self.finished = None
     def __repr__(self):
         return self.value
     def __eq__(self, other):
@@ -126,3 +129,41 @@ def print_path(G: Graph, s: Node, v: Node):
     else:
         print_path(G, s, v.predecessor)
         print(v)
+
+## Section 22.3 Depth-First Search
+
+def dfs(G: Graph) -> None:
+    """
+    Perform depth-first search on graph G.
+    """
+    # At beginning color all nodes white
+    for key in G.nodes:
+        G.nodes[key].color = 'W'
+    # Use t for timestamping
+    t = 0
+    # Iterate over nodes, search if node not
+    # discovered.
+    for key in sorted(G.nodes):
+        u = G.nodes[key]
+        if u.color == 'W':
+            dfs_visit(G, u, t)
+
+def dfs_visit(G: Graph, u: Node, t: int) -> int:
+    """
+    Visit node u in depth-first search.
+    """
+    # Color node gray to mark discovery
+    u.color = 'G'
+    # Increment time
+    t += 1
+    u.discovered = t
+    # Explore edge (u, v)
+    for v in sorted(G.adj[u], key = lambda v:v.value):
+        if v.color == 'W':
+            v.predecessor = u
+            t = dfs_visit(G, v, t)
+    # Color u black; it is finished
+    u.color = 'B'
+    t += 1
+    u.finished = t
+    return t
