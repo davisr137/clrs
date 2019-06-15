@@ -167,3 +167,81 @@ def dfs_visit(G: Graph, u: Node, t: int) -> int:
     t += 1
     u.finished = t
     return t
+
+## Detect a cycle in a graph using DFS
+
+def cycle(G: Graph) -> bool:
+    """
+    Return True if graph G has a cycle, else return False.
+    """
+    # At beginning color all nodes white
+    for key in G.nodes:
+        G.nodes[key].color = 'W'
+    # Search undiscovered nodes
+    for key in sorted(G.nodes):
+        u = G.nodes[key]
+        # Graph has a back edge - there is a cycle!
+        if u.color == 'G':
+            return True
+        if u.color == 'W':
+            found_cycle = dfs_visit_cycle(G, u)
+            if found_cycle:
+                return True
+    return False
+
+def dfs_visit_cycle(G: Graph, u: Node) -> bool:
+    """
+    Visit node u in depth-first search.
+    """
+    # Color node gray to mark discovery
+    u.color = 'G'
+    # Explore edge (u, v)
+    for v in sorted(G.adj[u], key = lambda v : v.value):
+        if v.color == 'G':
+            return True
+        if v.color == 'W':
+            v.predecessor = u
+            found_cycle = dfs_visit_cycle(G, v)
+            if found_cycle:
+                return True
+    # Color u black; it is finished
+    u.color = 'B'
+    return False
+
+## Section 22.4: Topological sort
+
+def topological_sort_visit(G: Graph, u: Node, t: int, L: List) -> List:
+    """
+    Visit node u as part of a topological sort. 
+    """
+    u.color = 'G'
+    t += 1
+    u.discovered = t
+    for v in sorted(G.adj[u], key = lambda v:v.value):
+        if v.color == 'W':
+            v.predecessor = u
+            [t, L] = topological_sort_visit(G, v, t, L)
+    u.color = 'B'
+    t += 1
+    u.finished = t
+    L = [u] + L
+    return [t, L]
+
+def topological_sort(G: Graph) -> List:
+    """
+    Perform a topological sort on graph G. Return a list of
+    nodes in topologically sorted order. 
+    """
+    # At beginning color all nodes white
+    for key in G.nodes:
+        G.nodes[key].color = 'W'
+    # Use t for timestamping
+    t = 0
+    L = []
+    # Iterate over nodes, search if node not
+    # discovered.
+    for key in sorted(G.nodes):
+        u = G.nodes[key]
+        if u.color == 'W':
+            [t, L] = topological_sort_visit(G, u, t, L)
+    return L
