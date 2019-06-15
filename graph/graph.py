@@ -75,6 +75,11 @@ def dict_str_to_dict_node(d_str: Dict) -> Dict:
     return d_node
 
 class Graph:
+    """
+    Class representing a graph with vertices and edges.
+
+    G = (V, E)
+    """
     def __init__(self, adj: Dict):
         """
         Initialize graph using adjacency list representation
@@ -281,7 +286,7 @@ def transpose(G: Graph) -> Graph:
     GT = Graph(adj_tr) 
     return GT
 
-def strongly_connected_components(G: Graph):
+def strongly_connected_components(G: Graph) -> List[List[Node]]:
     """
     Compute the strongly connected components of a graph G. A 
     strongly connected component is a maximal set of vertices C
@@ -293,3 +298,42 @@ def strongly_connected_components(G: Graph):
     # Compute transpose
     GT = transpose(G)
     # Run DFS but consider the vertices in order of decreasing f
+    C = dfs_scc(GT)
+    # Return connected components. Each list within C represents
+    # connected component (tree in depth-first forest).
+    return C
+
+def dfs_scc(G: Graph) -> List[List[Node]]:
+    """
+    Perform depth-first search on graph G to find strongly 
+    connected components. Nodes in the graph should have already been
+    discovered and given discovery and finishing times.
+    """
+    # Color each node white
+    nodes = list(G.nodes.values())
+    for u in nodes:
+        u.color = 'W'
+    # Represent components as list of lists of nodes
+    components = []
+    # Search nodes in decreasing finishing time from last search
+    for u in sorted(nodes, key = lambda v: v.finished, reverse=True):
+        if u.color == 'W':
+            C = dfs_visit_scc(G, u, [])
+            components += [C]
+    return components
+
+def dfs_visit_scc(G: Graph, u: Node, C: List) -> List[Node]:
+    """
+    Visit node u in depth-first search.
+    """
+    # Color node gray to mark discovery
+    u.color = 'G'
+    # Add u to component
+    C += [u]
+    # Explore edge (u, v)
+    for v in sorted(G.adj[u], key = lambda v: v.finished, reverse=True):
+        if v.color == 'W':
+            C = dfs_visit_scc(G, v, C)
+    # Color u black; it is finished
+    u.color = 'B'
+    return C
