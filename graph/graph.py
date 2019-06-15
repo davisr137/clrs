@@ -1,3 +1,4 @@
+import copy
 from typing import List, Dict
 
 ## CLRS Section 22: Graph Algorithms
@@ -59,23 +60,39 @@ class Node:
     def __hash__(self):
         return hash(self.value)
 
+def dict_str_to_dict_node(d_str: Dict) -> Dict:
+    """
+    Convert dict with keys and values as str to dict
+    with keys and values as Node.
+    """
+    keys = list(d_str.keys())
+    nodes = {}
+    for key in keys:
+        nodes[key] = Node(key)
+    d_node = {}
+    for key in keys:
+        d_node[nodes[key]] = [nodes[label] for label in d_str[key]]
+    return d_node
+
 class Graph:
     def __init__(self, adj: Dict):
         """
         Initialize graph using adjacency list representation
         stored in dictionary.
         """
-        keys = list(adj.keys())
-        # Map node values to pointers to Node objects
+        self.adj = adj
+        nodes_list = list(adj.keys())
         nodes = {}
-        for key in keys:
-            nodes[key] = Node(key)
+        for node in nodes_list:
+            nodes[node.value] = node
         self.nodes = nodes
-        # Make new adjacency list with Node objects
-        adjD = {}
-        for key in keys:
-            adjD[nodes[key]] = [nodes[label] for label in adj[key]]
-        self.adj = adjD
+    @classmethod
+    def from_strings(cls, adj_str: Dict):
+        """
+        Initialize graph from dictionary of strings.
+        """
+        adj = dict_str_to_dict_node(adj_str)
+        return cls(adj)
 
 class Queue:
     """
@@ -245,3 +262,34 @@ def topological_sort(G: Graph) -> List:
         if u.color == 'W':
             [t, L] = topological_sort_visit(G, u, t, L)
     return L
+
+## Section 22.5: Strongly connected components
+
+def transpose(G: Graph) -> Graph:
+    """
+    Return the transpose of a graph G consisting of the edges
+    of G with their directions reversed.
+    """
+    adj = copy.deepcopy(G.adj)
+    adj_tr = {}
+    for node in adj:
+        adj_tr[node] = []
+    for node in adj:
+        adj_nodes = adj[node]
+        for adj_node in adj_nodes:
+            adj_tr[adj_node] += [node]
+    GT = Graph(adj_tr) 
+    return GT
+
+def strongly_connected_components(G: Graph):
+    """
+    Compute the strongly connected components of a graph G. A 
+    strongly connected component is a maximal set of vertices C
+    such that for every pair of vertices u and v in C, u and v
+    are reachable from each other.
+    """
+    # Run DFS and get finishing times (f)
+    dfs(G)
+    # Compute transpose
+    GT = transpose(G)
+    # Run DFS but consider the vertices in order of decreasing f
